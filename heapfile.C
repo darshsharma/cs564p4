@@ -36,8 +36,9 @@ const Status createHeapFile(const string fileName)
         if(status!=OK) return status;
         status = bufMgr->unPinPage(file,newPageNo,true);
         if(status!=OK) return status;
-		// file doesn't exist. First create it and allocate
-		// an empty header page and data page.
+        status = bufMgr->flushFile(file);
+        status = db.closeFile(file);
+        return status;
     }
     return (FILEEXISTS);
 }
