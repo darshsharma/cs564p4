@@ -285,6 +285,11 @@ const Status HeapFileScan::scanNext(RID& outRid)
         status = bufMgr->readPage(filePtr,curPageNo,curPage);
         curDirtyFlag = false;
         status = curPage->firstRecord(tmpRid);
+        if(status==NORECORDS){
+            status = curPage->getNextPage(nextPageNo);
+            if(status!=OK) return status;
+            continue;
+        }
         if(status!=OK){
             return status;
         }
